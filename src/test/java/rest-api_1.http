@@ -1,0 +1,11 @@
+GET http://localhost:9090/currencies
+
+###
+POST http://localhost:9090/currencies
+Content-Type: application/json
+
+{
+    "currencyName": "Euro",
+    "currencyCode": "EUR",
+    "currencySign": "€",
+}

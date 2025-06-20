@@ -105,16 +105,4 @@ public class CurrencyDaoImpl implements CurrencyDao {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public void delete(Long id) {
-        String sql = "DELETE FROM CURRENCIES WHERE id=?";
-        try (Connection conn = DriverManager.getConnection(dbUrl)) {
-            PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setLong(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

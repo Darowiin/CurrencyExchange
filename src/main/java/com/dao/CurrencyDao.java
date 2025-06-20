@@ -1,6 +1,5 @@
 package com.dao;
 
-import com.dto.CurrencyDto;
 import com.models.Currency;
 
 import java.util.List;
@@ -17,6 +16,4 @@ public interface CurrencyDao {
     void save(Currency currency);
 
     void update(Currency currency);
-
-    void delete(Long id);
 }
