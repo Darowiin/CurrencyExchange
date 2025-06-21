@@ -35,6 +35,7 @@ public class CurrenciesController extends HttpServlet {
             List<CurrencyDto> currencies = currencyService.getAllCurrencies();
 
             request.setAttribute("currencies", currencies);
+            response.setStatus(HttpServletResponse.SC_OK);
             objectMapper.writeValue(response.getWriter(), currencies);
 
         } catch (Exception e) {

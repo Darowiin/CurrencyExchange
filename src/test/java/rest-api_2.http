@@ -1,0 +1,40 @@
+GET http://localhost:9090/exchangeRates
+###
+
+POST http://localhost:9090/exchangeRates
+Content-Type: application/x-www-form-urlencoded
+
+baseCurrencyCode = USD &
+targetCurrencyCode = EUR &
+rate = 0.87
+
+###
+
+POST http://localhost:9090/exchangeRates
+Content-Type: application/x-www-form-urlencoded
+
+baseCurrencyCode = EUR &
+targetCurrencyCode = KZT
+###
+
+POST http://localhost:9090/exchangeRates
+Content-Type: application/x-www-form-urlencoded
+
+baseCurrencyCode = EUR &
+rate = 0.87
+###
+
+POST http://localhost:9090/exchangeRates
+Content-Type: application/x-www-form-urlencoded
+
+targetCurrencyCode = EUR &
+rate = 0.87
+###
+
+POST http://localhost:9090/exchangeRates
+Content-Type: application/x-www-form-urlencoded
+
+baseCurrencyCode = EUR &
+targetCurrencyCode = RUB &
+rate = 90.37
+###

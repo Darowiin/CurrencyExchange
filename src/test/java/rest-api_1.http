@@ -19,16 +19,25 @@ code = KZT &
 sign = ₸
 
 ###
+
+POST http://localhost:9090/currencies
+Content-Type: application/x-www-form-urlencoded
+
+name = Ruble &
+code = RUB &
+sign = ₽
+###
 POST http://localhost:9090/currencies
 Content-Type: application/x-www-form-urlencoded
 
 name = Thai baht &
 code = THB
-
 ###
+
 POST http://localhost:9090/currencies
 Content-Type: application/x-www-form-urlencoded
 
 name = Australian dollar &
 code = AUD &
 sign = A$
+###

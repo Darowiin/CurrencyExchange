@@ -1,21 +1,18 @@
 package com.dao;
 
-import com.dto.ExchangeRateDto;
+import com.models.ExchangeRate;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ExchangeRateDao {
-    Optional<ExchangeRateDto> findById(Long id);
+    Optional<ExchangeRate> findById(Long id);
 
-    Optional<ExchangeRateDto> findByCodes(String baseCode, String targetCode);
+    Optional<ExchangeRate> findByCodes(String baseCode, String targetCode);
 
-    List<ExchangeRateDto> getAll();
+    List<ExchangeRate> getAll();
 
-    void save(ExchangeRateDto rate);
+    void save(ExchangeRate rate);
 
-    void update(ExchangeRateDto rate);
-
-    void delete(Long id);
-
+    void update(ExchangeRate rate);
 }
