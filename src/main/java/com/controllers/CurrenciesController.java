@@ -1,12 +1,12 @@
 package com.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.dto.CurrencyDto;
 import com.services.CurrencyService;
 import com.services.CurrencyServiceImpl;
 import com.dao.CurrencyDaoImpl;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +17,7 @@ import java.util.List;
 @WebServlet("/currencies")
 public class CurrenciesController extends HttpServlet {
     private CurrencyService currencyService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void init() {
@@ -26,27 +27,50 @@ public class CurrenciesController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<CurrencyDto> currencies = currencyService.getAllCurrencies();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
 
-        req.setAttribute("currencies", currencies);
-        req.getRequestDispatcher("/WEB-INF/views/currencies.jsp").forward(req, resp);
+            List<CurrencyDto> currencies = currencyService.getAllCurrencies();
+
+            request.setAttribute("currencies", currencies);
+            objectMapper.writeValue(response.getWriter(), currencies);
+
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Can't connect to the database");
+        }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String currencyCode = req.getParameter("currencyCode");
-        String currencyName = req.getParameter("currencyName");
-        String currencySign = req.getParameter("currencySign");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
 
-        if (currencyCode != null && currencyName != null) {
-            CurrencyDto newCurrency = new CurrencyDto();
-            newCurrency.setCode(currencyCode);
-            newCurrency.setFullName(currencyName);
-            newCurrency.setSign(currencySign);
-            currencyService.saveCurrency(newCurrency);
+            String currencyName = request.getParameter("name");
+            String currencyCode = request.getParameter("code");
+            String currencySign = request.getParameter("sign");
+
+            if (currencyCode != null && currencyName != null && currencySign != null) {
+                CurrencyDto newCurrency = new CurrencyDto();
+                newCurrency.setCode(currencyCode);
+                newCurrency.setFullName(currencyName);
+                newCurrency.setSign(currencySign);
+                if (currencyService.getCurrencyByCode(currencyCode).isPresent()) {
+                    response.sendError(HttpServletResponse.SC_CONFLICT, "Currency with this code already exists");
+                    return;
+                }
+                currencyService.saveCurrency(newCurrency);
+
+                response.setStatus(HttpServletResponse.SC_CREATED);
+                objectMapper.writeValue(response.getWriter(), newCurrency);
+            }
+            else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Currency code, name and sign are required");
+            }
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Can't connect to the database");
         }
-
-        resp.sendRedirect(req.getContextPath() + "/currencies");
     }
 }

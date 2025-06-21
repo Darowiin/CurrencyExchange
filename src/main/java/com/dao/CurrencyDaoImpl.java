@@ -1,10 +1,10 @@
 package com.dao;
 
 import com.models.Currency;
+import com.utils.DatabaseConnection;
 
 import javax.servlet.ServletContext;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,20 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class CurrencyDaoImpl implements CurrencyDao {
-    private final String dbUrl;
 
     public CurrencyDaoImpl(ServletContext context) {
-        String path = context.getRealPath("/WEB-INF/Exchanger.db");
-        this.dbUrl = "jdbc:sqlite:" + path;
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("SQLite JDBC driver not found", e);
-        }
+        DatabaseConnection.init(context);
     }
 
     private Optional<Currency> getCurrency(Currency currency, String sql) {
-        try (Connection conn = DriverManager.getConnection(dbUrl)) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
@@ -35,10 +28,11 @@ public class CurrencyDaoImpl implements CurrencyDao {
                 currency.setCode(resultSet.getString("Code"));
                 currency.setFullName(resultSet.getString("FullName"));
                 currency.setSign(resultSet.getString("Sign"));
+                return Optional.of(currency);
             }
-            return Optional.ofNullable(currency);
+            return Optional.empty();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Ошибка при получении валюты: " + e.getMessage(), e);
         }
     }
 
@@ -60,7 +54,7 @@ public class CurrencyDaoImpl implements CurrencyDao {
     public List<Currency> getAll() {
         List<Currency> currencies = new ArrayList<>();
         String sql = "SELECT * FROM CURRENCIES";
-        try (Connection conn = DriverManager.getConnection(dbUrl)) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
@@ -73,28 +67,28 @@ public class CurrencyDaoImpl implements CurrencyDao {
             }
             return currencies;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Ошибка при получении списка валют: " + e.getMessage(), e);
         }
     }
 
     @Override
     public void save(Currency currency) {
         String sql = "INSERT INTO CURRENCIES (Code, FullName, Sign) VALUES (?, ?, ?)";
-        try (Connection conn = DriverManager.getConnection(dbUrl)) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, currency.getCode());
             statement.setString(2, currency.getFullName());
             statement.setString(3, currency.getSign());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Ошибка при сохранении валюты: " + e.getMessage(), e);
         }
     }
 
     @Override
     public void update(Currency currency) {
         String sql = "UPDATE CURRENCIES SET Code=?, FullName=?, Sign=? WHERE id=?";
-        try (Connection conn = DriverManager.getConnection(dbUrl)) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, currency.getCode());
             statement.setString(2, currency.getFullName());
@@ -102,7 +96,7 @@ public class CurrencyDaoImpl implements CurrencyDao {
             statement.setLong(4, currency.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Ошибка при обновлении валюты: " + e.getMessage(), e);
         }
     }
 }
