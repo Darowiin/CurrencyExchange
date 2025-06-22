@@ -1,10 +1,7 @@
 package com.controllers;
 
-import com.dao.CurrencyDaoImpl;
 import com.dao.ExchangeRateDaoImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.services.CurrencyService;
-import com.services.CurrencyServiceImpl;
 import com.services.ExchangeRateService;
 import com.services.ExchangeRateServiceImpl;
 
@@ -20,7 +17,6 @@ import java.math.BigDecimal;
 @WebServlet("/exchangeRate/*")
 public class ExchangeRateController extends HttpServlet {
     private ExchangeRateService exchangeRateService;
-    private CurrencyService currencyService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -28,10 +24,7 @@ public class ExchangeRateController extends HttpServlet {
         ServletContext context = getServletContext();
 
         ExchangeRateDaoImpl exchangeRateDao = new ExchangeRateDaoImpl(context);
-        CurrencyDaoImpl currencyDao = new CurrencyDaoImpl(context);
-
         exchangeRateService = new ExchangeRateServiceImpl(exchangeRateDao);
-        currencyService = new CurrencyServiceImpl(currencyDao);
     }
 
     @Override
