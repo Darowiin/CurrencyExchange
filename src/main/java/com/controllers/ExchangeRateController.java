@@ -30,9 +30,6 @@ public class ExchangeRateController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
             String pathInfo = request.getPathInfo().substring(1);
             String baseCurrencyCode = pathInfo.substring(0, 3);
             String targetCurrencyCode = pathInfo.substring(3);
@@ -55,9 +52,6 @@ public class ExchangeRateController extends HttpServlet {
 
     protected void doPatch(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
             BigDecimal rate = BigDecimal.valueOf(Double.parseDouble(request.getParameter("rate")));
 
             String pathInfo = request.getPathInfo().substring(1);

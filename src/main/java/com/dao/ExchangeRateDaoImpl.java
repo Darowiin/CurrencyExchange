@@ -84,7 +84,6 @@ public class ExchangeRateDaoImpl implements ExchangeRateDao {
                 Long baseCurrencyId = resultSet.getLong("BaseCurrencyId");
                 Long targetCurrencyId = resultSet.getLong("TargetCurrencyId");
 
-                // Получение объектов Currency из базы данных по их ID
                 Optional<Currency> baseCurrency = currencyDao.findById(baseCurrencyId);
                 Optional<Currency> targetCurrency = currencyDao.findById(targetCurrencyId);
 

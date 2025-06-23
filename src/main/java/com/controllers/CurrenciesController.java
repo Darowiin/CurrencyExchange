@@ -29,9 +29,6 @@ public class CurrenciesController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
             List<CurrencyDto> currencies = currencyService.getAllCurrencies();
 
             request.setAttribute("currencies", currencies);
@@ -46,9 +43,6 @@ public class CurrenciesController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
             String currencyName = request.getParameter("name");
             String currencyCode = request.getParameter("code");
             String currencySign = request.getParameter("sign");

@@ -27,9 +27,6 @@ public class CurrencyController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
             String currencyCode = request.getPathInfo() != null ? request.getPathInfo().substring(1) : null;
 
             if (currencyCode != null) {
