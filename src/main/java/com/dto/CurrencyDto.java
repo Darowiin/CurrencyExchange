@@ -10,6 +10,6 @@ public class CurrencyDto {
     Long id;
 
     String code;
-    String fullName;
+    String name;
     String sign;
 }

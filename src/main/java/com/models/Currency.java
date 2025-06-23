@@ -17,13 +17,13 @@ public class Currency {
     @NonNull
     String code;
     @NonNull
-    String fullName;
+    String name;
     @NonNull
     String sign;
 
-    public Currency(String code, String fullName, String sign) {
+    public Currency(String code, String name, String sign) {
         this.code = code;
-        this.fullName = fullName;
+        this.name = name;
         this.sign = sign;
     }
 }

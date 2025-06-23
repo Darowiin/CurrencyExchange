@@ -56,7 +56,7 @@ public class CurrenciesController extends HttpServlet {
             if (currencyCode != null && currencyName != null && currencySign != null) {
                 CurrencyDto newCurrency = new CurrencyDto();
                 newCurrency.setCode(currencyCode);
-                newCurrency.setFullName(currencyName);
+                newCurrency.setName(currencyName);
                 newCurrency.setSign(currencySign);
                 if (currencyService.getCurrencyByCode(currencyCode).isPresent()) {
                     response.sendError(HttpServletResponse.SC_CONFLICT, "Currency with this code already exists");

@@ -15,7 +15,7 @@ public class Mapper {
         CurrencyDto dto = new CurrencyDto();
         dto.setId(currency.getId());
         dto.setCode(currency.getCode());
-        dto.setFullName(currency.getFullName());
+        dto.setName(currency.getName());
         dto.setSign(currency.getSign());
 
         return dto;
@@ -29,7 +29,7 @@ public class Mapper {
         Currency currency = new Currency();
         currency.setId(dto.getId());
         currency.setCode(dto.getCode());
-        currency.setFullName(dto.getFullName());
+        currency.setName(dto.getName());
         currency.setSign(dto.getSign());
 
         return currency;

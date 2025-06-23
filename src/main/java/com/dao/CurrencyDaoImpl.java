@@ -26,7 +26,7 @@ public class CurrencyDaoImpl implements CurrencyDao {
             if (resultSet.next()) {
                 currency.setId(resultSet.getLong("id"));
                 currency.setCode(resultSet.getString("Code"));
-                currency.setFullName(resultSet.getString("FullName"));
+                currency.setName(resultSet.getString("FullName"));
                 currency.setSign(resultSet.getString("Sign"));
                 return Optional.of(currency);
             }
@@ -61,7 +61,7 @@ public class CurrencyDaoImpl implements CurrencyDao {
                 Currency currency = new Currency();
                 currency.setId(resultSet.getLong("id"));
                 currency.setCode(resultSet.getString("Code"));
-                currency.setFullName(resultSet.getString("FullName"));
+                currency.setName(resultSet.getString("FullName"));
                 currency.setSign(resultSet.getString("Sign"));
                 currencies.add(currency);
             }
@@ -77,7 +77,7 @@ public class CurrencyDaoImpl implements CurrencyDao {
         try (Connection conn = DatabaseConnection.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, currency.getCode());
-            statement.setString(2, currency.getFullName());
+            statement.setString(2, currency.getName());
             statement.setString(3, currency.getSign());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -91,7 +91,7 @@ public class CurrencyDaoImpl implements CurrencyDao {
         try (Connection conn = DatabaseConnection.getConnection()) {
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, currency.getCode());
-            statement.setString(2, currency.getFullName());
+            statement.setString(2, currency.getName());
             statement.setString(3, currency.getSign());
             statement.setLong(4, currency.getId());
             statement.executeUpdate();
